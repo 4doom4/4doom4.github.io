@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
+    <script>
+        function getDistance() {
+          var startDate = new Date(2023, 5, 7); // Months are zero-based in JavaScript Date
+          var today = new Date();
+          var daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+    
+          var days = Array.from({ length: 3 }, (_, i) => i + daysPassed);
+          var distance = x => Math.round(Math.sqrt(2 * x));
+          return days.map(distance);
+        }
+    
+        function displayDistance() {
+          var result = getDistance();
+          var outputToday = document.getElementById('today');
+          outputToday.textContent = "Today you need to run " + result[0] + "km!";
+          var outputTomorrow = document.getElementById('tomorrow');
+          outputTomorrow.textContent = "Tomorrow you need to run " + result[1] + "km!";
+          var outputDayAfterTomorrow = document.getElementById('dayaftertomorrow');
+          outputDayAfterTomorrow.textContent = "And the day after tomorrow you need to run " + result[2] + "km!";
+        }
+
+        window.onload = displayDistance;
+      </script>
+</head>
+<body>
+    <h1>Hello runner!</h1>
+    <p id="today"></p>
+    <p id="tomorrow"></p>
+    <p id="dayaftertomorrow"></p>
+</body>
+</html>
