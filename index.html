@@ -4,24 +4,41 @@
     <meta charset="UTF-8">
     <title>The Triangle Run</title>
     <script>
-        function getDistance() {
-          var startDate = new Date(2023, 5, 7); // Months are zero-based in JavaScript Date
-          var today = new Date();
-          var daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-    
-          var days = Array.from({ length: 3 }, (_, i) => i + daysPassed);
-          var distance = x => Math.round(Math.sqrt(2 * x));
+        function getDistance(passedDays) {  
+          let days = Array.from({ length: 3 }, (_, i) => i + passedDays);
+          let distance = x => Math.round(Math.sqrt(2 * x));
           return days.map(distance);
         }
     
         function displayDistance() {
-          var result = getDistance();
-          var outputToday = document.getElementById('today');
-          outputToday.textContent = "Today you need to run " + result[0] + "km!";
-          var outputTomorrow = document.getElementById('tomorrow');
-          outputTomorrow.textContent = "Tomorrow you need to run " + result[1] + "km!";
-          var outputDayAfterTomorrow = document.getElementById('dayaftertomorrow');
-          outputDayAfterTomorrow.textContent = "And the day after tomorrow you need to run " + result[2] + "km!";
+            let maxDistance = 15;
+            let totalDays = (maxDistance * (maxDistance + 1)) / 2;
+            let startDate = new Date(2023, 5, 7); // Months are zero-based in JavaScript Date
+            let today = new Date();
+            let passedDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            let distances = getDistance(passedDays);
+
+            let completedSegments = document.getElementById('completedSegments');
+            completedSegments.textContent = "Completed segments: ";
+            let totalDistance = 0;
+            let curDistance = 0;
+            for (let i = 1; i < passedDays; i++) {
+                curDistance = Math.round(Math.sqrt(2 * i));
+                totalDistance +=  curDistance;
+                completedSegments.textContent +=  curDistance + "km ";
+            }
+
+            let progress = document.getElementById('progress');
+            progress.textContent = "This is day " + passedDays + " out of " + totalDays + "! " +
+                                   "Minimal distance up to today: " + totalDistance + "km";
+
+            let outputToday = document.getElementById('today');
+            outputToday.textContent = "Today you need to run " + distances[0] + "km!";
+            let outputTomorrow = document.getElementById('tomorrow');
+            outputTomorrow.textContent = "Tomorrow you need to run " + distances[1] + "km!";
+            let outputDayAfterTomorrow = document.getElementById('dayaftertomorrow');
+            outputDayAfterTomorrow.textContent = "And the day after tomorrow you need to run " + distances[2] + "km!";
+
         }
 
         window.onload = displayDistance;
@@ -29,9 +46,12 @@
 </head>
 <body>
     <h1>Hello runner, welcome to the triangle run!</h1>
+    <h2 id="progress"></h2>
     <p id="today"></p>
     <p id="tomorrow"></p>
     <p id="dayaftertomorrow"></p>
+    <br>
+    <p id="completedSegments"></p>
     <br>
     <img src="images/triangle.png">
 </body>
